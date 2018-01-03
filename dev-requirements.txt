@@ -2,3 +2,5 @@ pylint
 mypy
 pytest
 autopep8
+httpie==0.9.9
+rope==0.10.7

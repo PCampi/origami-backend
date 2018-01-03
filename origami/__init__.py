@@ -1,3 +1,3 @@
-"""Ciao"""
+"""Main module."""
 
-print("Ciao")
+from .main_app import APPLICATION
