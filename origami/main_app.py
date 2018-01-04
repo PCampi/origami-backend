@@ -25,9 +25,8 @@ def get_engine(memory=False):
         )
 
 
-def create_app(db_mode_memory=False):
+def create_app(db_engine):
     """Create the app."""
-    db_engine = get_engine(memory=db_mode_memory)
     session_factory = sessionmaker(bind=db_engine)
     db_session = scoped_session(session_factory)
 

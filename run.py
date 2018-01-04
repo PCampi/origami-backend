@@ -2,8 +2,8 @@
 
 from werkzeug.serving import run_simple
 
-# pylint: disable E0611
-from origami import create_app
+import origami
 
 if __name__ == '__main__':
-    run_simple("localhost", 5000, create_app(db_mode_memory=True))
+    ENGINE = origami.get_engine(memory=False)
+    run_simple("localhost", 5000, origami.create_app(ENGINE))
