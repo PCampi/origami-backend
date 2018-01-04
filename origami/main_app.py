@@ -25,13 +25,17 @@ def get_engine(memory=False):
         )
 
 
-DB_ENGINE = get_engine(memory=True)
-SESSION_FACTORY = sessionmaker(bind=DB_ENGINE)
-DBSESSION = scoped_session(SESSION_FACTORY)
+def create_app(db_mode_memory=False):
+    """Create the app."""
+    db_engine = get_engine(memory=db_mode_memory)
+    session_factory = sessionmaker(bind=db_engine)
+    db_session = scoped_session(session_factory)
 
-API = APPLICATION = falcon.API(middleware=[
-    SQLAlchemySessionManager(DBSESSION)
-])
+    api = falcon.API(middleware=[
+        SQLAlchemySessionManager(db_session)
+    ])
 
-API.add_route("/players", player.Collection())
-API.add_route("/players/{id}", player.Item())
+    api.add_route("/players", player.Collection())
+    api.add_route("/players/{id}", player.Item())
+
+    return api
