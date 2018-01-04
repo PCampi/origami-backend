@@ -1,14 +1,20 @@
 """Player resource."""
 
 import json
+import logging
+
 import falcon
+
+logger = logging.getLogger("main.player")
+logger.setLevel(logging.DEBUG)
 
 
 class Item(object):
     """Class representing an origami app player."""
 
-    def on_get(self, req, resp):
+    def on_get(self, req, resp, id):
         """Get a single player."""
+        logger.info("Got get request")
         player = {
             "id": 1,
             "name": "Giovannino",

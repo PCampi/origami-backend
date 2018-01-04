@@ -12,6 +12,7 @@
             "pythonPath": "${config:python.pythonPath}",
             "program": "${file}",
             "cwd": "${workspaceFolder}",
+            "preLaunchTask": "clean",
             "env": {},
             "envFile": "${workspaceFolder}/.env",
             "debugOptions": [
