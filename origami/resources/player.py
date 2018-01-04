@@ -3,23 +3,42 @@
 import json
 import falcon
 
-class Player(object):
-    """Class representing an origami app player."""
 
-    def __init__(self, name, age, gender):
-        """Constructor."""
-        self._name = name
-        self._age = age
-        self._gender = gender
+class Item(object):
+    """Class representing an origami app player."""
 
     def on_get(self, req, resp):
         """Get a single player."""
         player = {
+            "id": 1,
             "name": "Giovannino",
             "age": 9,
             "gender": "male"
         }
 
-        resp.data = json.dumps(player)
+        resp.body = json.dumps(player, ensure_ascii=False)
         resp.status = falcon.HTTP_200
-        
+
+
+class Collection(object):
+    """Class to manage REST requests for the Player collection."""
+
+    def on_get(self, req, resp):
+        """Called on a GET for the collection."""
+        players = [
+            {
+                "id": 1,
+                "name": "Giovannino",
+                "age": 9,
+                "gender": "male"
+            },
+            {
+                "id": 2,
+                "name": "Lucia",
+                "age": 7,
+                "gender": "female"
+            }
+        ]
+
+        resp.body = json.dumps(players, ensure_ascii=False)
+        resp.status = falcon.HTTP_200

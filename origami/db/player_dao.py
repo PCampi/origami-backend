@@ -27,7 +27,7 @@ class PlayerDao(Base):
             "age": self.age,
             "gender": self.gender
         }
-    
+
     def save(self, session):
         """Persist the object."""
         with session.begin():
@@ -40,5 +40,5 @@ class PlayerDao(Base):
         with session.begin():
             query = session.query(cls)
             models = query.all()
-        
+
         return models
