@@ -3,13 +3,14 @@
 from falcon import testing
 import pytest
 
-from ..main_app import create_app
+from ..main_app import create_app, get_engine
 
 
 @pytest.fixture()
 def client():
     """Create a client context for testing."""
-    return testing.TestClient(create_app(db_mode_memory=True))
+    engine = get_engine(memory=True)
+    return testing.TestClient(create_app(engine))
 
 
 def test_get_player(client):
