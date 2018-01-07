@@ -12,7 +12,7 @@ logger.setLevel(logging.DEBUG)
 class Item(object):
     """Class representing an origami app player."""
 
-    def on_get(self, req, resp, id):
+    def on_get(self, req, resp, player_id):
         """Get a single player."""
         logger.info("Got get request")
         player = {

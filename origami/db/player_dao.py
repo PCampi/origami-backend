@@ -35,6 +35,7 @@ class PlayerDao(Base):
 
     @classmethod
     def get_list(cls, session):
+        """Get a list of instances from the db."""
         models = []
 
         with session.begin():
@@ -42,3 +43,7 @@ class PlayerDao(Base):
             models = query.all()
 
         return models
+
+    def __repr__(self):
+        """Return a description of self."""
+        return "<Player(id:{}, name:{}, age:{}, gender:{})>".format(self.id, self.name, self.age, self.gender)

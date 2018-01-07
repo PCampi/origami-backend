@@ -20,9 +20,15 @@ def get_engine(memory=False):
         return create_engine("sqlite:///:memory:", echo=True)
     else:
         logger.info("Creating persistent database with postgres")
-        return create_engine(
-            "postgres://user:password@localhost:5342/origami-dev"
+        db_name = "origami_db"
+        db_user = "origami_user"
+        db_password = "origami_password"
+
+        url = "postgres://{}:{}@localhost:5432/{}".format(
+            db_user, db_password, db_name
         )
+
+        return create_engine(url, echo=True)
 
 
 def create_app(db_engine):
@@ -35,6 +41,6 @@ def create_app(db_engine):
     ])
 
     api.add_route("/players", player.Collection())
-    api.add_route("/players/{id}", player.Item())
+    api.add_route("/players/{player_id}", player.Item())
 
     return api
