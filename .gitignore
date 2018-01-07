@@ -99,3 +99,6 @@ ENV/
 
 # Excel files not useful
 *.xlsx
+
+# Data directory for PostgreSQL Docker
+data/

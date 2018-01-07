@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:10.1
+    container_name: origami_db_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "origami_password"
+      POSTGRES_USER: "origami_user"
+      POSTGRES_DB: "origami_db"
+  web:
+    build: .
+    command: ["gunicorn", "origami:API"]
+    volumes:
+      - .:/opt/origami
+    ports:
+      - "8000:5000"
+    depends_on:
+      - db
