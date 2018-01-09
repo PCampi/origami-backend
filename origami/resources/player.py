@@ -5,6 +5,8 @@ import logging
 
 import falcon
 
+from ..db import PlayerDao
+
 logger = logging.getLogger("main.player")
 logger.setLevel(logging.DEBUG)
 
@@ -14,16 +16,15 @@ class Item(object):
 
     def on_get(self, req, resp, player_id):
         """Get a single player."""
-        logger.info("Got get request")
-        player = {
-            "id": 1,
-            "name": "Giovannino",
-            "age": 9,
-            "gender": "male"
-        }
+        player_orm = PlayerDao.get_by_id(player_id, self.session)
 
-        resp.body = json.dumps(player, ensure_ascii=False)
-        resp.status = falcon.HTTP_200
+        if player_orm:
+            player = player_orm.as_dict
+
+            resp.body = json.dumps(player, ensure_ascii=False)
+            resp.status = falcon.HTTP_200
+        else:
+            resp.status = falcon.HTTP_404
 
 
 class Collection(object):
@@ -31,20 +32,8 @@ class Collection(object):
 
     def on_get(self, req, resp):
         """Called on a GET for the collection."""
-        players = [
-            {
-                "id": 1,
-                "name": "Giovannino",
-                "age": 9,
-                "gender": "male"
-            },
-            {
-                "id": 2,
-                "name": "Lucia",
-                "age": 7,
-                "gender": "female"
-            }
-        ]
+        players_orm = PlayerDao.get_list(self.session)
+        players = [player.as_dict for player in players_orm]
 
         resp.body = json.dumps(players, ensure_ascii=False)
         resp.status = falcon.HTTP_200
