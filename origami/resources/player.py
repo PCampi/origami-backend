@@ -5,13 +5,14 @@ import logging
 
 import falcon
 
+from .sessioned_resource import SessionedResource
 from ..db import PlayerDao
 
 logger = logging.getLogger("main.player")
 logger.setLevel(logging.DEBUG)
 
 
-class Item(object):
+class Item(SessionedResource):
     """Class representing an origami app player."""
 
     def on_get(self, req, resp, player_id):
@@ -27,7 +28,7 @@ class Item(object):
             resp.status = falcon.HTTP_404
 
 
-class Collection(object):
+class Collection(SessionedResource):
     """Class to manage REST requests for the Player collection."""
 
     def on_get(self, req, resp):

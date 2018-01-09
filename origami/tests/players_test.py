@@ -3,24 +3,15 @@
 import logging
 
 import falcon
-from falcon import testing
 
-from ..main_app import create_app, get_engine
+from .base_test_class import OrigamiTestCase
+
 
 logger = logging.getLogger("main.test_player")
 logger.setLevel(logging.DEBUG)
 
 
-class MyTestCase(testing.TestCase):
-    """Base class for all tests."""
-
-    def setUp(self):
-        super(MyTestCase, self).setUp()
-        engine = get_engine(memory=False)
-        self.app = create_app(engine)
-
-
-class PlayersTestCase(MyTestCase):
+class PlayersTestCase(OrigamiTestCase):
     """Class for testing players."""
 
     def test_get_players_list(self):

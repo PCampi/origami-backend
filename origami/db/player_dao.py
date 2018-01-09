@@ -32,8 +32,7 @@ class PlayerDao(Base):
 
     def save(self, session):
         """Persist the object."""
-        with session.begin():
-            session.add(self)
+        session.add(self)
 
     @classmethod
     def get_by_id(cls, player_id, session):
