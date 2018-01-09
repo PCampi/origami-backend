@@ -18,5 +18,9 @@ def populate():
     player2 = db.PlayerDao("Federica", 8, "female")
     player3 = db.PlayerDao("Josh", 6, "male")
 
+    admin1 = db.AdministratorDao("Pippo", "pippo@gmail.com", "pippo1")
+    admin2 = db.AdministratorDao("Pluto", "pluto@gmail.com", "pluto2")
+    admin3 = db.AdministratorDao("Paperino", "paperino@gmail.com", "paperino3")
+
     session.add_all([player1, player2, player3])
     session.commit()

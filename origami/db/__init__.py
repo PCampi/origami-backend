@@ -2,3 +2,4 @@
 
 from .meta import Base
 from .player_dao import PlayerDao
+from .administrator_dao import AdministratorDao
