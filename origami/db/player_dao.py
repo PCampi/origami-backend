@@ -4,11 +4,11 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
+from .base_dao import BaseDao
 
 
-class PlayerDao(Base):
+class PlayerDao(BaseDao, Base):
     """DAO class for Player objects."""
-    __tablename__ = "players"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50))

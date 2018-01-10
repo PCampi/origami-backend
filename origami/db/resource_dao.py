@@ -4,12 +4,12 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
+from .base_dao import BaseDao
 from .resource_type import ResourceEnum
 
 
-class ResourceDeo(Base):
+class ResourceDeo(BaseDao, Base):
     """DAO class for Resource objects."""
-    __tablename__ = "resources"
 
     id = Column(Integer, primary_key=True)
     resource_type = Column(String, primary_key=True)
@@ -20,7 +20,7 @@ class ResourceDeo(Base):
         if resource_type in ResourceEnum:
             self.resource_type = resource_type
         else:
-            raise ValueError("Resource of type {} is not allowed"
+            raise ValueError("Value {} not allowed for argument resource_type. See resource_type.py"
                              .format(resource_type))
         self.url = url
         self.fs_path = fs_path
@@ -38,6 +38,10 @@ class ResourceDeo(Base):
     @classmethod
     def get_by_id_and_type(cls, resource_id, resource_type, session):
         """Get a single instance identified by id and type."""
+        if resource_type not in ResourceEnum:
+            raise ValueError("Value {} not allowed for argument resource_type. See resource_type.py"
+                             .format(resource_type))
+
         query = session.query(cls)\
             .filter(cls.id == resource_id and cls.resource_type == resource_type)
         try:
@@ -50,9 +54,12 @@ class ResourceDeo(Base):
             return resources
 
     @classmethod
-    def get_list(cls, session):
+    def get_list(cls, resource_type, session):
         """Return a list of instances."""
-        resources = session.query.all()
+        if resource_type not in ResourceEnum:
+            raise ValueError("Value {} not allowed for argument resource_type. See resource_type.py"
+                             .format(resource_type))
+        resources = session.query(cls).all()
         return resources
 
     def __repr__(self):

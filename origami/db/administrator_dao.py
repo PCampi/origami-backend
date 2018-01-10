@@ -4,11 +4,11 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
+from .base_dao import BaseDao
 
 
-class AdministratorDao(Base):
+class AdministratorDao(BaseDao, Base):
     """DAO class for Administrator objects."""
-    __tablename__ = "administrators"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
