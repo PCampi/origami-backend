@@ -5,6 +5,7 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
 
+
 class AdministratorDao(Base):
     """DAO class for Administrator objects."""
     __tablename__ = "administrators"
@@ -38,13 +39,13 @@ class AdministratorDao(Base):
         """Get a single instance identified by its id."""
         query = session.query(cls).filter(cls.id == admin_id)
         try:
-            admin = query.one()
+            admins = query.one()
         except MultipleResultsFound:
             raise
         except NoResultFound:
             return None
-
-        return admin
+        else:
+            return admins
 
     @classmethod
     def get_list(cls, session):
@@ -54,4 +55,5 @@ class AdministratorDao(Base):
 
     def __repr__(self):
         """Return a description of self."""
-        return "<Admin(id:{}, name:{}, email:{}, password:{})>".format(self.id, self.name, self.email, self.password)
+        return "<Admin(id:{}, name:{}, email:{}, password:{})>".format(
+            self.id, self.name, self.email, self.password)

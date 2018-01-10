@@ -55,4 +55,5 @@ class PlayerDao(Base):
 
     def __repr__(self):
         """Return a description of self."""
-        return "<Player(id:{}, name:{}, age:{}, gender:{})>".format(self.id, self.name, self.age, self.gender)
+        return "<Player(id:{}, name:{}, age:{}, gender:{})>".format(
+            self.id, self.name, self.age, self.gender)
