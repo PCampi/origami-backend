@@ -8,7 +8,7 @@ from .base_dao import BaseDao
 from .resource_type import ResourceEnum
 
 
-class ResourceDeo(BaseDao, Base):
+class ResourceDao(BaseDao, Base):
     """DAO class for Resource objects."""
 
     id = Column(Integer, primary_key=True)
