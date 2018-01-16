@@ -11,7 +11,7 @@ class EndingDao(BaseDao, Base):
     """DAO class for Ending objects."""
 
     id = Column(Integer, primary_key = True)
-    id_played_story = Column(Integer, ForeignKey('played_story.id'))
+    id_played_story = Column(Integer, ForeignKey('playedstory.id'))
     text = Column(String(1000))
 
     def __init__(self, id_played_story, text):
