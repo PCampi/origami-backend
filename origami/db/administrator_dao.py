@@ -48,6 +48,20 @@ class AdministratorDao(BaseDao, Base):
             return admins
 
     @classmethod
+    def get_by_email_and_password(cls, admin_email, admin_pass, session):
+        """Get a single instance identified by its email."""
+        query = session.query(cls).filter(
+            cls.email == admin_email and cls.password == admin_pass)
+        try:
+            admins = query.one()
+        except MultipleResultsFound:
+            raise
+        except NoResultFound:
+            return None
+        else:
+            return admins
+
+    @classmethod
     def get_list(cls, session):
         """Get a list of instances from the db."""
         admins = session.query(cls).all()

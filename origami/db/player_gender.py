@@ -3,7 +3,7 @@
 import enum
 
 
-class PlayerEnum(enum.Enum):
+class PlayerGenderEnum(enum.Enum):
     """Enum for the player classes."""
     male = "male"
     female = "female"

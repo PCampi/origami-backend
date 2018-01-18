@@ -8,7 +8,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import app_logging
 from .middleware import SQLAlchemySessionManager
-from .resources import player
+from .resources import player, login_admin
 
 logger = app_logging.get_logger("main", level=logging.DEBUG)
 
@@ -19,7 +19,7 @@ def get_engine(memory=False):
         logger.info("Creating memory database")
         return create_engine("sqlite:///:memory:", echo=True)
     else:
-        logger.info("Creating persistent database with postgres")
+        logger.info("Creating engine for postgres")
         db_name = "origami_db"
         db_user = "origami_user"
         db_password = "origami_password"
@@ -40,6 +40,7 @@ def create_app(db_engine):
         SQLAlchemySessionManager(db_session)
     ])
 
+    api.add_route("/login", login_admin.Item())
     api.add_route("/players", player.Collection())
     api.add_route("/players/{player_id}", player.Item())
 
