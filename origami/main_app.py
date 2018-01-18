@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import app_logging
-from .middleware import SQLAlchemySessionManager
+from .middleware import SQLAlchemySessionManager, get_aut_middleware
 from .resources import player
 
 logger = app_logging.get_logger("main", level=logging.DEBUG)
@@ -37,7 +37,8 @@ def create_app(db_engine):
     db_session = scoped_session(session_factory)
 
     api = falcon.API(middleware=[
-        SQLAlchemySessionManager(db_session)
+        SQLAlchemySessionManager(db_session),
+        get_aut_middleware("ciaobello", exempt_routes=["/login"])
     ])
 
     api.add_route("/players", player.Collection())
