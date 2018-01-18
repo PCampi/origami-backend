@@ -5,7 +5,8 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
 from .base_dao import BaseDao
-from .player_gender import PlayerEnum
+from .player_gender import PlayerGenderEnum
+
 
 class PlayerDao(BaseDao, Base):
     """DAO class for Player objects."""
@@ -18,9 +19,13 @@ class PlayerDao(BaseDao, Base):
     def __init__(self, name, age, gender):
         self.name = name
         self.age = age
-        if gender in PlayerEnum:
-            self.gender = gender
-        else:
+
+        for enum_gender in PlayerGenderEnum:
+            if gender == enum_gender.value:
+                self.gender = gender
+                break
+
+        if self.gender is None:
             raise ValueError("Value {} not allowed for argument gender. See player_gender.py"
                              .format(gender))
 

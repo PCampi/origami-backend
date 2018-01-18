@@ -23,4 +23,5 @@ def populate():
     admin3 = db.AdministratorDao("Paperino", "paperino@gmail.com", "paperino3")
 
     session.add_all([player1, player2, player3])
+    session.add_all([admin1, admin2, admin3])
     session.commit()

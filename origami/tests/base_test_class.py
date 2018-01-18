@@ -10,5 +10,11 @@ class OrigamiTestCase(testing.TestCase):
 
     def setUp(self):
         super(OrigamiTestCase, self).setUp()
+        self.secret_key = "pippo"
         engine = get_engine(memory=False)
-        self.app = create_app(engine)
+        self.app = create_app(self.secret_key, engine)
+
+    def tearDown(self):
+        super(OrigamiTestCase, self).tearDown()
+        self.secret_key = None
+        self.app = None
