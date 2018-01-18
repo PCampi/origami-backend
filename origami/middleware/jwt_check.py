@@ -3,7 +3,7 @@
 from falcon_jwt_checker import JwtChecker
 
 
-def get_aut_middleware(secret, exempt_routes=[], exempt_methods=["HEAD"],
+def get_aut_middleware(secret, exempt_routes=["/login"], exempt_methods=["HEAD"],
                        audience="origami.it", expiration_time=30):
     """Create a JWT checker middleware."""
 
@@ -15,4 +15,5 @@ def get_aut_middleware(secret, exempt_routes=[], exempt_methods=["HEAD"],
         audience=audience,
         leeway=expiration_time
     )
+
     return jwt_checker

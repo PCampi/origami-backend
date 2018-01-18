@@ -1,6 +1,6 @@
 """DAO module for the Administrator class."""
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, and_
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
@@ -51,7 +51,7 @@ class AdministratorDao(BaseDao, Base):
     def get_by_email_and_password(cls, admin_email, admin_pass, session):
         """Get a single instance identified by its email."""
         query = session.query(cls).filter(
-            cls.email == admin_email and cls.password == admin_pass)
+            and_(cls.email == admin_email, cls.password == admin_pass))
         try:
             admins = query.one()
         except MultipleResultsFound:
