@@ -20,21 +20,21 @@ class PlayersTestCase(OrigamiTestCase):
         target = [
             {
                 "id": 1,
-                "name": "Giovannino",
+                "name": "Gianni",
                 "age": 9,
                 "gender": "male"
             },
             {
                 "id": 2,
-                "name": "Andreino",
-                "age": 11,
-                "gender": "male"
+                "name": "Federica",
+                "age": 8,
+                "gender": "female"
             },
             {
                 "id": 3,
-                "name": "Viola",
-                "age": 8,
-                "gender": "female"
+                "name": "Josh",
+                "age": 6,
+                "gender": "male"
             }
         ]
 
@@ -45,7 +45,7 @@ class PlayersTestCase(OrigamiTestCase):
         result = self.simulate_get("/players/1").json
         target = {
             "id": 1,
-            "name": "Giovannino",
+            "name": "Gianni",
             "age": 9,
             "gender": "male"
         }
