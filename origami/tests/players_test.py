@@ -7,8 +7,8 @@ import falcon
 from .base_test_class import OrigamiTestCase
 
 
-logger = logging.getLogger("main.test_player")
-logger.setLevel(logging.DEBUG)
+LOGGER = logging.getLogger("main.test_player")
+LOGGER.setLevel(logging.DEBUG)
 
 
 class PlayersTestCase(OrigamiTestCase):

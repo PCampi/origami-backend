@@ -22,6 +22,14 @@ def populate():
     admin2 = db.AdministratorDao("Pluto", "pluto@gmail.com", "pluto2")
     admin3 = db.AdministratorDao("Paperino", "paperino@gmail.com", "paperino3")
 
+    authorized_account_1 = db.AuthorizedAccountDao("Voldemort")
+    authorized_account_2 = db.AuthorizedAccountDao("Harry Potter")
+    authorized_account_3 = db.AuthorizedAccountDao(
+        "Albus Percival Wulfric Brian Silente")
+
     session.add_all([player1, player2, player3])
     session.add_all([admin1, admin2, admin3])
+    session.add_all(
+        [authorized_account_1, authorized_account_2, authorized_account_3])
+
     session.commit()
