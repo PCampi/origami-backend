@@ -1,15 +1,9 @@
 """Test for login."""
 
-import logging
-
 import falcon
 import jwt
 
 from .base_test import OrigamiTestCase
-
-
-LOGGER = logging.getLogger("main.test_player")
-LOGGER.setLevel(logging.DEBUG)
 
 
 class LoginTestCase(OrigamiTestCase):

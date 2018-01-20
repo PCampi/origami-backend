@@ -7,12 +7,14 @@ import falcon
 from .sessioned_resource import SessionedResource
 from ..db import MediaDao
 
+
 class Item(SessionedResource):
     """Class to manage REST requests for the Media item."""
 
     def on_get(self, req, resp, media_id, media_type):
         """Get a single media."""
-        media_orm = MediaDao.get_by_id_and_type(, self.session)
+        media_orm = MediaDao.get_by_id_and_type(
+            media_id, media_type, self.session)
 
         if media_orm:
             media = media_orm.as_dict
@@ -28,6 +30,7 @@ class Item(SessionedResource):
         resp.status = falcon.HTTP_201
         resp.location = "/images/" + name
 
+
 class TypeCollection(SessionedResource):
     """Class to manage REST requests for the Media type collection."""
 
@@ -39,12 +42,13 @@ class TypeCollection(SessionedResource):
         resp.body = json.dumps(medias, ensure_ascii=False)
         resp.status = falcon.HTTP_200
 
+
 class Collection(SessionedResource):
     """Class to manage REST requests for the Media collection."""
 
     def on_get(self, req, resp):
         """Called on a GET for the collection."""
-        medias_orm = MediaDao.get_list(self.session)
+        medias_orm = MediaDao.get_all(self.session)
         medias = [media.as_dict for media in medias_orm]
 
         resp.body = json.dumps(medias, ensure_ascii=False)
