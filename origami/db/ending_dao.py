@@ -5,17 +5,16 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
 from .base_dao import BaseDao
-from .played_story_dao import PlayedStoryDao
 
 class EndingDao(BaseDao, Base):
     """DAO class for Ending objects."""
 
     id = Column(Integer, primary_key = True)
-    id_played_story = Column(Integer, ForeignKey('playedstory.id'))
+    played_story_id = Column(Integer, ForeignKey('playedstory.id'))
     text = Column(String(1000))
 
-    def __init__(self, id_played_story, text):
-        self.id_played_story = id_played_story
+    def __init__(self,  played_story_id, text):
+        self.played_story_id = played_story_id
         self.text = text
 
     @property
@@ -23,7 +22,7 @@ class EndingDao(BaseDao, Base):
         """Returns a dictionary representation of the object."""
         return {
             "id": self.id,
-            "id_played_story": self.id_played_story,
+            "played_story_id": self.played_story_id,
             "text": self.text
         }
 
@@ -52,5 +51,5 @@ class EndingDao(BaseDao, Base):
 
     def __repr__(self):
         """Return a description of self."""
-        return "<Ending(id:{}, id_played_story:{}, text:{})>".format(
-            self.id, self.id_played_story, self.text)
+        return "<Ending(id:{}, played_story_id:{}, text:{})>".format(
+            self.id, self.played_story_id, self.text)

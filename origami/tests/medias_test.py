@@ -71,9 +71,31 @@ class MediasTestCase(OrigamiTestCase):
 
         self.assertEqual(target, result)
 
+    def test_get_media_types(self):
+        """Test for GET at /medias/image."""
+        result = self.simulate_get("/medias/image").json
+        target = [
+            {
+                "id": 4,
+                "type": "image",
+                "name": "image1.jpg",
+                "url": None,
+                "path": None
+            },
+            {
+                "id": 7,
+                "type": "image",
+                "name": "image2.jpg",
+                "url": None,
+                "path": None
+            }
+        ]
+
+        self.assertEqual(target, result)
+
     def test_get_media(self):
-        """Test for GET at /medias/1."""
-        result = self.simulate_get("/medias/1").json
+        """Test for GET at /medias/audio/1."""
+        result = self.simulate_get("/medias/audio/1").json
         target = {
             "id": 1,
             "type": "audio",
@@ -86,7 +108,7 @@ class MediasTestCase(OrigamiTestCase):
 
     def test_get_media_nonexistent(self):
         """Try to GET a nonexistent media."""
-        result = self.simulate_get("/media/8").status
+        result = self.simulate_get("/media/audio/5").status
         target = falcon.HTTP_404
 
         self.assertEqual(result, target)

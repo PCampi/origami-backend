@@ -13,7 +13,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class Item(SessionedResource):
-    """Class representing an origami app player."""
+    """Class to manage REST requests for the Player item."""
 
     def on_get(self, req, resp, player_id):
         """Get a single player."""

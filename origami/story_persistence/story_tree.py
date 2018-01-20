@@ -6,6 +6,12 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from .. import db
 from ..main_app import get_engine
 
+class MediaNotFoundError(Exception):
+    pass
+
+class StoryNotFoundError(Exception):
+    pass
+
 class Story(object):
 
     def __init__(self):
@@ -46,11 +52,3 @@ class Story(object):
             self.insert_nodes_media(node_children, session)
         
         session.commit()
-
-
-
-class MediaNotFoundError(Exception):
-    pass
-
-class StoryNotFoundError(Exception):
-    pass

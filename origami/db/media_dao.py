@@ -87,6 +87,18 @@ class MediaDao(BaseDao, Base):
         medias = session.query(cls).all()
         return medias
 
+    @classmethod
+    def get_list_by_type(cls, media_type, session):
+        """Get a list of instances by type."""
+        if media_type not in MediaEnum:
+            raise ValueError("Value {} not allowed for argument media_type. See media_type.py"
+                             .format(media_type))
+
+        medias = session.query(cls)\
+            .filter(cls.media_type == media_type)
+        
+        return medias
+
     def __repr__(self):
         """Return description of self."""
         return "<Media(id: {}, type: {}, name: {}, url: {}, path: {})>".format(
