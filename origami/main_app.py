@@ -36,14 +36,14 @@ def get_engine(memory=False):
         return create_engine(url, echo=True)
 
 
-def create_app(db_engine, aut_secret):
+def create_app(db_engine, secret_key):
     """Create the app."""
     session_factory = sessionmaker(bind=db_engine)
     db_session = scoped_session(session_factory)
 
     auth_backend = SessionedJWTBackend(
         AuthorizedAccountDao.validate,
-        aut_secret,
+        secret_key,
         algorithm='HS256',
         auth_header_prefix='jwt',
         leeway=30,
@@ -64,9 +64,9 @@ def create_app(db_engine, aut_secret):
         auth_middleware
     ])
 
-    api.add_route("/login", login_admin.Item())
+    api.add_route("/login", login_admin.Item(secret_key))
     api.add_route("/authorized_accounts",
-                  account_validation.Collection(aut_secret))
+                  account_validation.Collection(secret_key))
     api.add_route(
         "/authorized_accounts/{account_id}", account_validation.Item())
     api.add_route("/players", player.Collection())
