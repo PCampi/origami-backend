@@ -27,16 +27,23 @@ class LoginTestCase(OrigamiTestCase):
         admin_user = {"user": self.user_name, "password": self.user_password}
         result = self.simulate_post(self.url, json=admin_user)
 
-        result_token_str = result.text
-        result_token_bytes = result.content
+        self.assertEqual(result.status, falcon.HTTP_200)
 
+        result_token_bytes = result.content
         expected_token_bytes = jwt.encode(
             {"user": self.user_name}, self.secret_key)  # type: bytes
+
+        self.assertEqual(result_token_bytes, expected_token_bytes)
+
+        result_token_str = result.text
         expected_token_str = expected_token_bytes.decode("utf-8")  # type: str
 
-        self.assertEqual(result.status, falcon.HTTP_200)
         self.assertEqual(result_token_str, expected_token_str)
-        self.assertEqual(result_token_bytes, expected_token_bytes)
+
+        result_user = jwt.decode(result_token_bytes, self.secret_key)
+        expected_user = {"user": self.user_name}
+
+        self.assertEqual(result_user, expected_user)
 
     def test_refuse_login(self):
         """Test that it refuses login with incorrect credential."""
