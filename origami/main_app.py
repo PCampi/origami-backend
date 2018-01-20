@@ -7,15 +7,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import app_logging
-from .middleware import SQLAlchemySessionManager, SessionedJWTBackend, SessionedJWTMiddleware
-from .resources import player, login_admin, account_validation
-from .db import AuthorizedAccountDao
+from .db import AdministratorDao
+from .middleware import (JwtAuthBackend, SessionedAuthMiddleware,
+                         SQLAlchemySessionManager)
+from .resources import accounts, login_admin, player
 
 LOGGER = app_logging.get_logger("main", level=logging.DEBUG)
-
-
-def validate_user(decoded_token: str, session):
-    """Function used to validate a user decoded from a JWT token."""
 
 
 def get_engine(memory=False):
@@ -36,27 +33,24 @@ def get_engine(memory=False):
         return create_engine(url, echo=True)
 
 
-def create_app(db_engine, secret_key):
+def create_app(db_engine, secret_key, jwt_issuer="pmc-mg.origami.it"):
     """Create the app."""
     session_factory = sessionmaker(bind=db_engine)
     db_session = scoped_session(session_factory)
 
-    auth_backend = SessionedJWTBackend(
-        AuthorizedAccountDao.validate,
+    auth_backend = JwtAuthBackend(
         secret_key,
-        algorithm='HS256',
-        auth_header_prefix='jwt',
-        leeway=30,
-        expiration_delta=24 * 60 * 60,
-        audience="it.origami.pmc",
-        verify_claims=["exp"],
-        required_claims=["exp"]
+        AdministratorDao.validate,
+        auth_header_prefix="Bearer",
+        issuer=jwt_issuer,
+        verify_claims=True
     )
 
-    auth_middleware = SessionedJWTMiddleware(
+    auth_middleware = SessionedAuthMiddleware(
         auth_backend,
+        auth_header_prefix="Bearer",
         exempt_routes=["/login"],
-        exempt_methods=["HEAD"]
+        exempt_methods=["HEAD", "OPTIONS"]
     )
 
     api = falcon.API(middleware=[
@@ -64,11 +58,11 @@ def create_app(db_engine, secret_key):
         auth_middleware
     ])
 
-    api.add_route("/login", login_admin.Item(secret_key))
+    api.add_route("/login", login_admin.Item(secret_key, jwt_issuer))
     api.add_route("/authorized_accounts",
-                  account_validation.Collection(secret_key))
+                  accounts.Collection(secret_key, jwt_issuer))
     api.add_route(
-        "/authorized_accounts/{account_id}", account_validation.Item())
+        "/authorized_accounts/{user_id}", accounts.Item())
     api.add_route("/players", player.Collection())
     api.add_route("/players/{player_id}", player.Item())
 

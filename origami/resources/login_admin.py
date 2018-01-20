@@ -18,7 +18,7 @@ LOGGER.setLevel(logging.DEBUG)
 class Item(SessionedResource):
     """Class representing an item login."""
 
-    def __init__(self, secret_key):
+    def __init__(self, secret_key: str, issuer: str) -> None:
         """Constructor
 
         Parameters
@@ -28,11 +28,12 @@ class Item(SessionedResource):
         """
         super().__init__()
         self.secret_key = secret_key
+        self.issuer = issuer
 
     def on_post(self, req, resp):
         """Login endpoint for admins."""
         doc = json.load(req.bounded_stream)
-        email = doc["user"]
+        email = doc["email"]
         password = doc["password"]
 
         admin = AdministratorDao.get_by_email_and_password(
@@ -42,6 +43,7 @@ class Item(SessionedResource):
             resp.status = falcon.HTTP_403
         else:
             token = jwt.encode(
-                {"user": doc["user"]}, self.secret_key, algorithm="HS256")  # type: bytes
+                {"email": doc["email"], "iss": self.issuer},
+                self.secret_key, algorithm="HS256")  # type: bytes
             resp.status = falcon.HTTP_200
             resp.data = token
