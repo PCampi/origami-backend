@@ -8,27 +8,24 @@ from ..main_app import get_engine
 
 class Story(object):
 
-    #TODO: metodo per istanziare nodi con figli e media
-
     def __init__(self):
         self.parsed_story = None
 
     def read_story_tree(self, json_file):
-        json_story = open(json_file, "r")
-        parsed_story = json.loads(json_story)
-        json_story.close()
+        with open(json_file, "r") as json_story:
+            self.parsed_story = json.loads(json_story)
 
-    def insert_story_db(self, parsed_story):
+    def insert_story_db(self):
         engine = get_engine(memory=False)
         db.Base.metadata.create_all(engine)
         sess_maker = sessionmaker(bind=engine)
         Session = scoped_session(sess_maker)
         session = Session()
 
-        if not(parsed_story is None):
-            self.insert_nodes_media(parsed_story, session)
+        if self.parsed_story is not None:
+            self.insert_nodes_media(self.parsed_story, session)
         else:
-            print("There is no story to insert in the database.")
+            raise StoryNotFoundError("There is no story to insert in the database.")
 
     def insert_nodes_media(self, parsed_story, session):
         node_name = parsed_story['name']
@@ -38,14 +35,22 @@ class Story(object):
         node = db.NodeDao(node_name)
         session.add(node)
 
-        for resource in node_media:
-            resource_name = resource['name']
-            resource_type = resource['type']
-            found = db.ResourceDao.get_by_name_and_type(resource_name, resource_type, session)
+        for media in node_media:
+            media_name = media['name']
+            media_type = media['type']
+            found = db.MediaDao.get_by_name_and_type(media_name, media_type, session)
             if found is None:
-                raise ValueError("The resource requested is not present in the database.") #Non credo sia proprio un ValueError
+                raise MediaNotFoundError("The media requested is not present in the database.")
         
-        if not(node_children is {}):
+        if node_children is not None:
             self.insert_nodes_media(node_children, session)
         
         session.commit()
+
+
+
+class MediaNotFoundError(Exception):
+    pass
+
+class StoryNotFoundError(Exception):
+    pass

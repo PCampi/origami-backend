@@ -8,5 +8,5 @@ from .node_dao import NodeDao
 from .played_story_dao import PlayedStoryDao
 from .player_dao import PlayerDao
 from .player_gender import PlayerGenderEnum
-from .resource_dao import ResourceDao
-from .resource_type import ResourceEnum
+from .media_dao import MediaDao
+from .media_type import MediaEnum
