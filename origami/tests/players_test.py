@@ -4,11 +4,11 @@ import logging
 
 import falcon
 
-from .base_test_class import OrigamiTestCase
+from .base_test import OrigamiTestCase
 
 
-logger = logging.getLogger("main.test_player")
-logger.setLevel(logging.DEBUG)
+LOGGER = logging.getLogger("main.test_player")
+LOGGER.setLevel(logging.DEBUG)
 
 
 class PlayersTestCase(OrigamiTestCase):
@@ -16,7 +16,8 @@ class PlayersTestCase(OrigamiTestCase):
 
     def test_get_players_list(self):
         """Test for the GET at /players."""
-        result = self.simulate_get("/players").json
+        result = self.simulate_get(
+            "/players", headers={"Authorization": "Bearer " + self.token}).json
         target = [
             {
                 "id": 1,
@@ -42,7 +43,8 @@ class PlayersTestCase(OrigamiTestCase):
 
     def test_get_player(self):
         """Test for GET at /players/1."""
-        result = self.simulate_get("/players/1").json
+        result = self.simulate_get(
+            "/players/1", headers={"Authorization": "Bearer " + self.token}).json
         target = {
             "id": 1,
             "name": "Gianni",
@@ -54,7 +56,8 @@ class PlayersTestCase(OrigamiTestCase):
 
     def test_get_player_nonexistent(self):
         """Try to GET a nonexistent player."""
-        result = self.simulate_get("/players/4").status
+        result = self.simulate_get(
+            "/players/4", headers={"Authorization": "Bearer " + self.token}).status
         target = falcon.HTTP_404
 
         self.assertEqual(result, target)

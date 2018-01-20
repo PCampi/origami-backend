@@ -4,6 +4,7 @@ class using sqlalchemy.
 """
 
 from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 
 class BaseDao(object):
@@ -43,6 +44,24 @@ class BaseDao(object):
             the sqlalchemy session used for the transaction
         """
         session.add(self)
+
+    @classmethod
+    def get_all(cls, session):
+        """Get all objects of class `cls` from the database."""
+        all_objects = session.query(cls).all()
+        return all_objects
+
+    @classmethod
+    def get_one(cls, query):
+        """Get one only instance of self, or None if query result is empty."""
+        try:
+            result = query.one()
+        except MultipleResultsFound:
+            raise
+        except NoResultFound:
+            return None
+        else:
+            return result
 
     def __repr__(self):
         """Return a string representation of self."""

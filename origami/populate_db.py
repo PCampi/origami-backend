@@ -11,8 +11,8 @@ def populate():
     engine = get_engine(memory=False)
     db.Base.metadata.create_all(engine)
     sess_maker = sessionmaker(bind=engine)
-    Session = scoped_session(sess_maker)
-    session = Session()
+    session_cls = scoped_session(sess_maker)
+    session = session_cls()
 
     player1 = db.PlayerDao("Gianni", 9, "male")
     player2 = db.PlayerDao("Federica", 8, "female")

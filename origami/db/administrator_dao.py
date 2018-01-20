@@ -30,22 +30,26 @@ class AdministratorDao(BaseDao, Base):
             "password": self.password
         }
 
-    def save(self, session):
-        """Persist the object."""
-        session.add(self)
+    @property
+    def as_validation_dict(self):
+        """Returns a dictionary for validation purposes."""
+        return {"user": self.name}
+
+    @property
+    def as_safe_dict(self):
+        """Returns a dictionary with only non sensitive infos on the administator."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+        }
 
     @classmethod
     def get_by_id(cls, admin_id, session):
         """Get a single instance identified by its id."""
         query = session.query(cls).filter(cls.id == admin_id)
-        try:
-            admins = query.one()
-        except MultipleResultsFound:
-            raise
-        except NoResultFound:
-            return None
-        else:
-            return admins
+        admin = cls.get_one(query)
+        return admin
 
     @classmethod
     def get_by_email_and_password(cls, admin_email, admin_pass, session):
@@ -62,10 +66,11 @@ class AdministratorDao(BaseDao, Base):
             return admins
 
     @classmethod
-    def get_list(cls, session):
-        """Get a list of instances from the db."""
-        admins = session.query(cls).all()
-        return admins
+    def validate(cls, admin_email, session):
+        """Get a single instance by its email."""
+        query = session.query(cls).filter(cls.email == admin_email)
+        admin = cls.get_one(query)
+        return admin
 
     def __repr__(self):
         """Return a description of self."""

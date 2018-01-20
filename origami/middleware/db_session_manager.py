@@ -2,7 +2,7 @@
 
 import logging
 
-logger = logging.getLogger("main.db_mw")
+LOGGER = logging.getLogger("main.db_mw")
 
 
 class SQLAlchemySessionManager(object):
@@ -14,7 +14,7 @@ class SQLAlchemySessionManager(object):
     def process_resource(self, req, resp, resource, params):
         """Set up a session for this request."""
         resource.session = self.session()
-        logger.debug("Started session %(session)s",
+        LOGGER.debug("Started session %(session)s",
                      {"session": resource.session})
 
     def process_response(self, req, resp, resource, req_succeeded):
@@ -22,6 +22,8 @@ class SQLAlchemySessionManager(object):
         if hasattr(resource, "session"):
             if not req_succeeded:
                 resource.session.rollback()
-                logger.debug("Rollbacked session %(session)s", {"session": resource.session})
+                LOGGER.debug("Rollbacked session %(session)s",
+                             {"session": resource.session})
             self.session.remove()
-            logger.debug("Removed session %(session)s", {"session": resource.session})
+            LOGGER.debug("Removed session %(session)s",
+                         {"session": resource.session})

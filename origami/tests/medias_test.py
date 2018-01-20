@@ -1,14 +1,8 @@
 """Unittest."""
 
-import logging
-
 import falcon
 
-from .base_test_class import OrigamiTestCase
-
-
-logger = logging.getLogger("main.test_medias")
-logger.setLevel(logging.DEBUG)
+from .base_test import OrigamiTestCase
 
 
 class MediasTestCase(OrigamiTestCase):
@@ -16,7 +10,8 @@ class MediasTestCase(OrigamiTestCase):
 
     def test_get_medias_list(self):
         """Test for the GET at /medias."""
-        result = self.simulate_get("/medias").json
+        result = self.simulate_get("/medias",
+                                   headers={"Authorization": "Bearer " + self.token}).json
         target = [
             {
                 "id": 1,
@@ -73,7 +68,8 @@ class MediasTestCase(OrigamiTestCase):
 
     def test_get_media_types(self):
         """Test for GET at /medias/image."""
-        result = self.simulate_get("/medias/image").json
+        result = self.simulate_get("/medias/image",
+                                   headers={"Authorization": "Bearer " + self.token}).json
         target = [
             {
                 "id": 4,
@@ -95,7 +91,8 @@ class MediasTestCase(OrigamiTestCase):
 
     def test_get_media(self):
         """Test for GET at /medias/audio/1."""
-        result = self.simulate_get("/medias/audio/1").json
+        result = self.simulate_get("/medias/audio/1",
+                                   headers={"Authorization": "Bearer " + self.token}).json
         target = {
             "id": 1,
             "type": "audio",
@@ -108,7 +105,8 @@ class MediasTestCase(OrigamiTestCase):
 
     def test_get_media_nonexistent(self):
         """Try to GET a nonexistent media."""
-        result = self.simulate_get("/media/audio/5").status
+        result = self.simulate_get("/media/audio/5",
+                                   headers={"Authorization": "Bearer " + self.token}).status
         target = falcon.HTTP_404
 
         self.assertEqual(result, target)

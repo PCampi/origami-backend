@@ -7,19 +7,22 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import app_logging
-from .middleware import SQLAlchemySessionManager
-from .resources import player, login_admin, node, played_story, ending, media
+from .db import AdministratorDao
+from .middleware import (JwtAuthBackend, SessionedAuthMiddleware,
+                         SQLAlchemySessionManager)
+from .resources import (accounts, ending, login_admin, media, node,
+                        played_story, player)
 
-logger = app_logging.get_logger("main", level=logging.DEBUG)
+LOGGER = app_logging.get_logger("main", level=logging.DEBUG)
 
 
 def get_engine(memory=False):
     """Get the SQLAlchemy engine."""
     if memory:
-        logger.info("Creating memory database")
+        LOGGER.info("Creating memory database")
         return create_engine("sqlite:///:memory:", echo=True)
     else:
-        logger.info("Creating engine for postgres")
+        LOGGER.info("Creating engine for postgres")
         db_name = "origami_db"
         db_user = "origami_user"
         db_password = "origami_password"
@@ -31,16 +34,36 @@ def get_engine(memory=False):
         return create_engine(url, echo=True)
 
 
-def create_app(db_engine):
+def create_app(db_engine, secret_key, jwt_issuer="pmc-mg.origami.it"):
     """Create the app."""
     session_factory = sessionmaker(bind=db_engine)
     db_session = scoped_session(session_factory)
 
+    auth_backend = JwtAuthBackend(
+        secret_key,
+        AdministratorDao.validate,
+        auth_header_prefix="Bearer",
+        issuer=jwt_issuer,
+        verify_claims=True
+    )
+
+    auth_middleware = SessionedAuthMiddleware(
+        auth_backend,
+        auth_header_prefix="Bearer",
+        exempt_routes=["/login"],
+        exempt_methods=["HEAD", "OPTIONS"]
+    )
+
     api = falcon.API(middleware=[
-        SQLAlchemySessionManager(db_session)
+        SQLAlchemySessionManager(db_session),
+        auth_middleware
     ])
 
-    api.add_route("/login", login_admin.Item())
+    api.add_route("/login", login_admin.Item(secret_key, jwt_issuer))
+    api.add_route("/authorized_accounts",
+                  accounts.Collection(secret_key, jwt_issuer))
+    api.add_route(
+        "/authorized_accounts/{user_id}", accounts.Item())
     api.add_route("/players", player.Collection())
     api.add_route("/players/{player_id}", player.Item())
     api.add_route("/medias", media.Collection())

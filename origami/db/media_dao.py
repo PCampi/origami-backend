@@ -12,13 +12,31 @@ class MediaDao(BaseDao, Base):
     """DAO class for Media objects."""
 
     id = Column(Integer, primary_key=True)
-    media_type = Column(String(5), primary_key=True)
+    media_type = Column(String(5))
     media_name = Column(String(50))
     url = Column(String(50), nullable=True)
     fs_path = Column(String(50), nullable=True)
+    allowed_media_types = {media_enum.value for media_enum in MediaEnum}
 
-    def __init__(self, media_type, media_name, url, fs_path):
-        if media_type in MediaEnum:
+    # FIXME: chi mi impedisce di inserire due media con uguale tipo e nome?
+    def __init__(self, media_type: str, media_name: str, url: str, fs_path: str) -> None:
+        """Create a new media DAO object.
+
+        Parameters
+        ----------
+        media_type: str
+            type of the media, must be one of MediaEnum
+
+        media_name: str
+            name of the media
+
+        url: str
+            url where the media can be found
+
+        fs_path: str
+            path on the filesystem where the media can be found
+        """
+        if media_type in self.allowed_media_types:
             self.media_type = media_type
         else:
             raise ValueError("Value {} not allowed for argument media_type. See media_type.py"
@@ -38,14 +56,10 @@ class MediaDao(BaseDao, Base):
             "fs_path": self.fs_path
         }
 
-    def save(self, session):
-        """Persist the object."""
-        session.add(self)
-
     @classmethod
     def get_by_id_and_type(cls, media_id, media_type, session):
         """Get a single instance identified by id and type."""
-        if media_type not in MediaEnum:
+        if media_type not in cls.allowed_media_types:
             raise ValueError("Value {} not allowed for argument media_type. See media_type.py"
                              .format(media_type))
 
@@ -63,27 +77,24 @@ class MediaDao(BaseDao, Base):
     @classmethod
     def get_by_name_and_type(cls, media_name, media_type, session):
         """Get a single instance identified by name and type."""
-        if media_type not in MediaEnum:
+        if media_type not in cls.allowed_media_types:
             raise ValueError("Value {} not allowed for argument media_type. See media_type.py"
                              .format(media_type))
 
         query = session.query(cls)\
             .filter(and_(cls.media_name == media_name, cls.media_type == media_type))
         try:
-            medias = query.one()
+            media = query.one()
         except MultipleResultsFound:
             raise
         except NoResultFound:
             return None
         else:
-            return medias
+            return media
 
     @classmethod
-    def get_list(cls, media_type, session):
+    def get_list(cls, session):
         """Return a list of instances."""
-        if media_type not in MediaEnum:
-            raise ValueError("Value {} not allowed for argument media_type. See media_type.py"
-                             .format(media_type))
         medias = session.query(cls).all()
         return medias
 
@@ -96,7 +107,7 @@ class MediaDao(BaseDao, Base):
 
         medias = session.query(cls)\
             .filter(cls.media_type == media_type)
-        
+
         return medias
 
     def __repr__(self):

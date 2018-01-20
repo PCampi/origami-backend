@@ -1,15 +1,9 @@
-"""Unittest."""
+"""Test for the Story import module."""
 
-import logging
+import json
 
-import falcon
-
-from .base_test_class import OrigamiTestCase
 from ..story_persistence import Story
-
-
-logger = logging.getLogger("main.test_story")
-logger.setLevel(logging.DEBUG)
+from .base_test import OrigamiTestCase
 
 
 class StoryTestCase(OrigamiTestCase):
@@ -18,7 +12,7 @@ class StoryTestCase(OrigamiTestCase):
     def test_node_insertion(self):
         """Test for the story's nodes registration in db."""
 
-        story_json = {
+        story_json = json.dumps({
             "name": "node1",
             "media": [
                 {
@@ -47,7 +41,7 @@ class StoryTestCase(OrigamiTestCase):
                     "name": "node3",
                     "media": [
                         {
-                            "name": "audio2",
+                            "name": "audio2.mp3",
                             "type": "audio"
                         }
                     ],
@@ -56,13 +50,18 @@ class StoryTestCase(OrigamiTestCase):
                     }
                 }
             ]
-        }
+        }, ensure_ascii=False)
+
+        temp_filename = "temp.json"
+        with open(temp_filename, "w") as outfile:
+            outfile.write(story_json)
 
         story = Story()
-        story.read_story_tree(story_json)
+        story.read_story_tree(temp_filename)
         story.insert_story_db()
 
-        result = self.simulate_get("/nodes").json
+        result = self.simulate_get(
+            "/nodes", headers={"Authorization": "Bearer " + self.token}).json
 
         target = [
             {
@@ -91,5 +90,7 @@ class StoryTestCase(OrigamiTestCase):
             }
         ]
 
+        # FIXME: questo test continua ad aggiungere i nodi,
+        # quindi al secondo giro si spacca.
+        # Forse si può risolvere con un in-memory database solo per i test?
         self.assertEqual(target, result)
-        
