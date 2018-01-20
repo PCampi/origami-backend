@@ -10,7 +10,8 @@ from . import app_logging
 from .db import AdministratorDao
 from .middleware import (JwtAuthBackend, SessionedAuthMiddleware,
                          SQLAlchemySessionManager)
-from .resources import accounts, login_admin, media, node, played_story, player
+from .resources import (accounts, ending, login_admin, media, node,
+                        played_story, player)
 
 LOGGER = app_logging.get_logger("main", level=logging.DEBUG)
 
@@ -71,6 +72,8 @@ def create_app(db_engine, secret_key, jwt_issuer="pmc-mg.origami.it"):
     api.add_route("/nodes", node.Collection())
     api.add_route("/nodes/{node_id}", node.Item())
     api.add_route("/played_stories", played_story.Collection())
-    api.add_route("/played_stories/{story_id}", played_story.StoryCollection())
+    api.add_route("/played_stories/{story_id}", played_story.Item())
+    api.add_route("/endings", ending.Collection())
+    api.add_route("/endings/{ending_id}", ending.Item())
 
     return api

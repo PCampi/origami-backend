@@ -11,7 +11,7 @@ from ..db import MediaDao
 class Item(SessionedResource):
     """Class to manage REST requests for the Media item."""
 
-    def on_get(self, req, resp, media_id, media_type):
+    def on_get(self, req, resp, media_type, media_id):
         """Get a single media."""
         media_orm = MediaDao.get_by_id_and_type(
             media_id, media_type, self.session)
