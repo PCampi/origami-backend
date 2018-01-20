@@ -22,7 +22,20 @@ def populate():
     admin2 = db.AdministratorDao("Pluto", "pluto@gmail.com", "pluto2")
     admin3 = db.AdministratorDao("Paperino", "paperino@gmail.com", "paperino3")
 
+    media1 = db.MediaDao("audio", "audio1.mp3", None, None)
+    media2 = db.MediaDao("video", "video1.mp4", None, None)
+    media3 = db.MediaDao("text", "text1.txt", None, None)
+    media4 = db.MediaDao("image", "image1.jpg", None, None)
+    media5 = db.MediaDao("audio", "audio2.mp3", None, None)
+    media6 = db.MediaDao("audio", "audio3.mp3", None, None)
+    media7 = db.MediaDao("image", "image2.jpg", None, None)
+
+    node1 = db.NodeDao("nodo_prova1")
+    node2 = db.NodeDao("nodo_prova2")
+    node3 = db.NodeDao("nodo_prova3")
+
     session.add_all([player1, player2, player3])
     session.add_all([admin1, admin2, admin3])
-
+    session.add_all([media1, media2, media3, media4, media5, media6, media7])
+    session.add_all([node1, node2, node3])
     session.commit()
