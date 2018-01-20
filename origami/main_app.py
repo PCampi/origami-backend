@@ -8,7 +8,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import app_logging
 from .middleware import SQLAlchemySessionManager
-from .resources import player, login_admin, media, node, played_story
+from .resources import player, login_admin, node, played_story, ending, media
 
 logger = app_logging.get_logger("main", level=logging.DEBUG)
 
@@ -49,6 +49,8 @@ def create_app(db_engine):
     api.add_route("/nodes", node.Collection())
     api.add_route("/nodes/{node_id}", node.Item())
     api.add_route("/played_stories", played_story.Collection())
-    api.add_route("/played_stories/{story_id}", played_story.StoryCollection())
+    api.add_route("/played_stories/{story_id}", played_story.Item())
+    api.add_route("/endings", ending.Collection())
+    api.add_route("/endings/{ending_id}", ending.Item())
 
     return api

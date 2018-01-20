@@ -44,6 +44,19 @@ class EndingDao(BaseDao, Base):
         return ending
 
     @classmethod
+    def get_by_played_story_id(cls, story_id, session):
+        """Get a single instance identified by its played story id."""
+        query = session.query(cls).filter(cls.played_story_id == story_id)
+        try:
+            story = query.one()
+        except MultipleResultsFound:
+            raise
+        except NoResultFound:
+            return None
+
+        return story
+
+    @classmethod
     def get_list(cls, session):
         """Get a list of instances from the db."""
         endings = session.query(cls).all()
