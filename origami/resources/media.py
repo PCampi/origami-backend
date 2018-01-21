@@ -24,12 +24,6 @@ class Item(SessionedResource):
         else:
             resp.status = falcon.HTTP_404
 
-    def on_post(self, req, resp):
-        """Post a single media."""
-        name = "boh.jpg"
-        resp.status = falcon.HTTP_201
-        resp.location = "/images/" + name
-
 
 class TypeCollection(SessionedResource):
     """Class to manage REST requests for the Media type collection."""
