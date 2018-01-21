@@ -37,9 +37,9 @@ Per l'esecuzione di questo progetto, abbiamo fatto uso dei seguenti elementi:
 	- Descrizione: SQLAlchemy è un Python SQL Toolkit che consente agli sviluppatori di utilizzare la potenza e la flessibilità di SQL tramite la sua suite completa di pattern di persistenza adattati alla semplicità del linguaggio Python. Abbiamo scelto SQLAlchemy poiché particolarmente noto per il suo Object-Relational Mapper (ORM), un componente che fornisce il data mapper pattern con cui le classi possono essere mappate all'interno del database in modi differenti.
 	- Link utili: [SQLAlchemy](https://www.sqlalchemy.org/).
 
-4. Database: PostgreSQL 10.1 via Docker
-	- Descrizione: PostgreSQL è un potente object-relational database system sviluppato open source. Data la presenza di un'interfaccia programmativa nativa per il linguaggio Python e l'utilizzo di SQLAlchemy, la nostra scelta per il database da utilizzare è ricaduta su di questo specifico database open source. Per uniformare l'installazione, si è usato Docker.
-	- Link utili: [PostgreSQL](https://www.postgresql.org/), [Docker](https://www.docker.com/)
+4. Database: PostgreSQL 10.1
+	- Descrizione: PostgreSQL è un potente object-relational database system sviluppato open source. Data la presenza di un'interfaccia programmativa nativa per il linguaggio Python e l'utilizzo di SQLAlchemy, la nostra scelta per il database da utilizzare è ricaduta su di questo specifico database open source.
+	- Link utili: [PostgreSQL](https://www.postgresql.org/)
 
 ## 4 - Istruzioni di installazione
 
@@ -57,32 +57,12 @@ pip list
 ```
 che dovrebbe visualizzare l'elenco dei pacchetti installati.
 
-### Installazione del database PostgreSQL via Docker
+### Installazione del database PostgreSQL
 Installare PostgreSQL dal [sito ufficiale](https://www.postgresql.org/), e creare un database con credenziali:
 
 - user: origami_user, deve essere un superuser
 - password: origami_password
 - nome database: origami_db
-
-Installare Docker dal [sito ufficiale](https://www.docker.com/). Lanciarlo e da terminale, digitare
-```bash
-docker pull postgres:10.1
-```
-per installare l'immagine del database.
-
-Creare un volume in cui Postgres salverà i dati container con il comando
-```bash
-docker volume create origami-volume-postgres
-```
-e successivamente creare un container con il seguente comando:
-```bash
-docker run --name origami-consegna --mount source=origami-volume-postgres,target=/var/lib/postgresql/data -e POSTGRES_PASSWORD=origami_password,POSTGRES_USER=origami_user,POSTGRES_DB=origami_db -p 5432:5432 postgres:10.1
-```
-
-Se per qualsiasi motivo il container dovesse arrestarsi, riavviarlo col comando
-```bash
-docker start -i origami-consegna
-```
 
 ### Installazione di virtualenv e creazione di un ambiente virtuale
 
@@ -116,7 +96,7 @@ seguito da
 pip install -r requirements.txt
 ```
 
-### Testing utilizzando l'IDE Visual Studio Code
+## 5 - Testing utilizzando l'IDE Visual Studio Code
 
 Il progetto è stato sviluppato utilizzando l'IDE [Visual Studio Code](https://code.visualstudio.com/), inclusi i casi di test e il settaggio del test runner. Per questo, si consiglia di scaricare ed installare tale IDE e utilizzarla per i test.
 
@@ -126,9 +106,8 @@ Aprire dal File Explorer la cartella dei test e aprire un file di test a scelta.
 
 Se l'IDE non proponesse automaticamente la scelta dell'interprete Python, utilizzare la combinazione di tasti `ctrl + shift + p` e digitare `Python: Select Interpreter`. Nel menù a tendina, selezionare l'interprete.
 
-**Assicurarsi che il container Docker del database sia in esecuzione.**
+**Assicurarsi che il database sia in esecuzione.**
 
 Aprire la palette comandi con lo shortcut `ctrl + shift + p` e digitare `Python: Run All Unit Tests`. L'IDE proporrà di configurare un testing framework, selezionare `unittest` dal menù a tendina, poi `. root directory` nella scelta della directory e il pattern `*_test.py` per abilitare la discovery automatica dei test.
 
 A questo punto, l'IDE lancia i test e riporta il risultato nella barra inferiore. Ci sono 26 test passati in totale.
-
