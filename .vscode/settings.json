@@ -1,3 +1,11 @@
 {
-    "python.pythonPath": "${workspaceFolder}/.venv/bin/python"
+    "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+    "python.unitTest.unittestArgs": [
+        "-v",
+        "-s",
+        ".",
+        "-p",
+        "*_test.py"
+    ],
+    "python.unitTest.unittestEnabled": true
 }
