@@ -1,7 +1,5 @@
 """Unittest."""
 
-import logging
-
 import falcon
 
 from .base_test import OrigamiTestCase
@@ -17,53 +15,45 @@ class PlayedStoriesTestCase(OrigamiTestCase):
         target = [
             {
                 "played_story": 1,
-                "player": [
-                    {
-                        "id": 1,
-                        "name": "Gianni",
-                        "age": 9,
-                        "gender": "male"
-                    }
-                ],
+                "player": {
+                    "id": 1,
+                    "name": "Gianni",
+                    "age": 9,
+                    "gender": "male"
+                },
                 "choices": [2, 1],
                 "ending": "La storia finisce bene."
             },
             {
                 "played_story": 2,
-                "player": [
-                    {
-                        "id": 2,
-                        "name": "Federica",
-                        "age": 8,
-                        "gender": "female"
-                    }
-                ],
+                "player": {
+                    "id": 2,
+                    "name": "Federica",
+                    "age": 8,
+                    "gender": "female"
+                },
                 "choices": [2, 3],
                 "ending": "La storia finisce male."
             },
             {
                 "played_story": 3,
-                "player": [
-                    {
-                        "id": 1,
-                        "name": "Gianni",
-                        "age": 9,
-                        "gender": "male"
-                    }
-                ],
+                "player": {
+                    "id": 1,
+                    "name": "Gianni",
+                    "age": 9,
+                    "gender": "male"
+                },
                 "choices": [3, 2],
                 "ending": "La storia finisce malissimo."
             },
             {
                 "played_story": 4,
-                "player": [
-                    {
-                        "id": 3,
-                        "name": "Josh",
-                        "age": 6,
-                        "gender": "male"
-                    }
-                ],
+                "player": {
+                    "id": 3,
+                    "name": "Josh",
+                    "age": 6,
+                    "gender": "male"
+                },
                 "choices": [3, 1],
                 "ending": "La storia finisce così così."
             }
@@ -77,14 +67,12 @@ class PlayedStoriesTestCase(OrigamiTestCase):
                                    headers={"Authorization": "Bearer " + self.token}).json
         target = {
             "played_story": 1,
-            "player": [
-                {
-                    "id": 1,
-                    "name": "Gianni",
-                    "age": 9,
-                    "gender": "male"
-                }
-            ],
+            "player": {
+                "id": 1,
+                "name": "Gianni",
+                "age": 9,
+                "gender": "male"
+            },
             "choices": [2, 1],
             "ending": "La storia finisce bene."
         }
