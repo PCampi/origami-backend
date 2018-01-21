@@ -9,16 +9,16 @@ from .. import db_utils
 class OrigamiTestCase(testing.TestCase):
     """Base class for all tests."""
 
-    @classmethod
-    def setUpClass(cls):
-        """Called whenever a test class is instantiated."""
-        cls.engine = get_engine(memory=False)
-        cls.clean_test_db(cls, cls.engine)
+    # @classmethod
+    # def setUpClass(cls):
+    #     """Called whenever a test class is instantiated."""
+    #     cls.engine = get_engine(memory=False)
+    #     cls.clean_test_db(cls, cls.engine)
 
-    @classmethod
-    def tearDownClass(cls):
-        """Called upon object destruction."""
-        cls.clean_test_db(cls, cls.engine)
+    # @classmethod
+    # def tearDownClass(cls):
+    #     """Called upon object destruction."""
+    #     cls.clean_test_db(cls, cls.engine)
 
     def setUp(self):
         """Default setUp which:
@@ -28,6 +28,11 @@ class OrigamiTestCase(testing.TestCase):
         - sets a valid jwt token in self.aut_token
         """
         super(OrigamiTestCase, self).setUp()
+        try:
+            getattr(self, "engine")
+        except AttributeError:
+            self.engine = get_engine(memory=False)
+
         self.clean_test_db(self.engine)
         self.create_test_db(self.engine)
 
@@ -53,8 +58,8 @@ class OrigamiTestCase(testing.TestCase):
 
     def create_test_db(self, engine=None):
         """Set up dummy data in the database."""
-        db_utils.insert_dummy_data(engine)
+        db_utils.insert_dummy_data(engine=engine)
 
     def clean_test_db(self, engine=None):
         """Clean the database by dropping all tables."""
-        db_utils.clean_database(engine)
+        db_utils.clean_database(engine=engine)

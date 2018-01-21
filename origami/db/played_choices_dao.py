@@ -6,6 +6,7 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from .meta import Base
 from .base_dao import BaseDao
 
+
 class PlayedChoicesDao(BaseDao, Base):
     """DAO class for Played Choices instances."""
 
@@ -45,5 +46,5 @@ class PlayedChoicesDao(BaseDao, Base):
 
     def __repr__(self):
         """Return a description of self."""
-        return "<PlayedChoices(story_id:{}, choice_number:{}, player_id:{})>".format(
-            self.story_id, self.choice_number, self.player_id)
+        return "<PlayedChoices(story_id:{}, choice_number:{}, node_id:{})>".format(
+            self.story_id, self.choice_number, self.node_id)

@@ -4,7 +4,7 @@ import logging
 
 import falcon
 
-from .base_test import OrigamiTestCase
+from .base_test_class import OrigamiTestCase
 
 
 LOGGER = logging.getLogger("main.test_player")

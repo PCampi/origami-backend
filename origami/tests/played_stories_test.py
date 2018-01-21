@@ -2,7 +2,7 @@
 
 import falcon
 
-from .base_test import OrigamiTestCase
+from .base_test_class import OrigamiTestCase
 
 
 class PlayedStoriesTestCase(OrigamiTestCase):

@@ -15,8 +15,8 @@ def insert_dummy_data(engine=None):
     engine: SQLAlchemy Engine, optional
         database connection engine
     """
-    if not engine:
-        engine = get_engine(memory=False)
+    # if not engine:
+    #     engine = get_engine(memory=False)
 
     db.Base.metadata.create_all(engine)
     sess_maker = sessionmaker(bind=engine)
@@ -89,6 +89,6 @@ def clean_database(engine=None):
 
     engine: SQLAlchemy Engine, optional
         database connection engine"""
-    if not engine:
-        engine = get_engine(memory=False)
+    # if not engine:
+    #     engine = get_engine(memory=False)
     db.Base.metadata.drop_all(bind=engine)

@@ -3,7 +3,7 @@
 import json
 
 from ..story_persistence import Story
-from .base_test import OrigamiTestCase
+from .base_test_class import OrigamiTestCase
 
 
 class StoryTestCase(OrigamiTestCase):

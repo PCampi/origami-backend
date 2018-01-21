@@ -30,7 +30,7 @@ def find_elements(story_id, session):
         raise StoryNotFoundException(
             "Story with id {} not found".format(story_id))
 
-    story = story_orm.as_dict["id"]
+    story = story_orm.id
 
     player_orm = PlayerDao.get_by_id(story_orm.player_id, session)
     player = player_orm.as_dict
