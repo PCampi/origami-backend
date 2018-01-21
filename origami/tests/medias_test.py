@@ -17,50 +17,43 @@ class MediasTestCase(OrigamiTestCase):
                 "id": 1,
                 "media_type": "audio",
                 "media_name": "audio1.mp3",
-                "url": None,
-                "fs_path": None
+                "url": None
             },
             {
                 "id": 2,
                 "media_type": "video",
                 "media_name": "video1.mp4",
-                "url": None,
-                "fs_path": None
+                "url": None
             },
             {
                 "id": 3,
                 "media_type": "text",
                 "media_name": "text1.txt",
-                "url": None,
-                "fs_path": None
+                "url": None
             },
             {
                 "id": 4,
                 "media_type": "image",
                 "media_name": "image1.jpg",
-                "url": None,
-                "fs_path": None
+                "url": None
             },
             {
                 "id": 5,
                 "media_type": "audio",
                 "media_name": "audio2.mp3",
-                "url": None,
-                "fs_path": None
+                "url": None
             },
             {
                 "id": 6,
                 "media_type": "audio",
                 "media_name": "audio3.mp3",
-                "url": None,
-                "fs_path": None
+                "url": None
             },
             {
                 "id": 7,
                 "media_type": "image",
                 "media_name": "image2.jpg",
-                "url": None,
-                "fs_path": None
+                "url": None
             }
         ]
 
@@ -75,15 +68,13 @@ class MediasTestCase(OrigamiTestCase):
                 "id": 4,
                 "media_type": "image",
                 "media_name": "image1.jpg",
-                "url": None,
-                "fs_path": None
+                "url": None
             },
             {
                 "id": 7,
                 "media_type": "image",
                 "media_name": "image2.jpg",
-                "url": None,
-                "fs_path": None
+                "url": None
             }
         ]
 
@@ -97,8 +88,7 @@ class MediasTestCase(OrigamiTestCase):
             "id": 1,
             "media_type": "audio",
             "media_name": "audio1.mp3",
-            "url": None,
-            "fs_path": None
+            "url": None
         }
 
         self.assertEqual(target, result)

@@ -43,7 +43,6 @@ class MediaDao(BaseDao, Base):
                              .format(media_type))
         self.media_name = media_name
         self.url = url
-        self.fs_path = fs_path
 
     @property
     def as_dict(self):
@@ -99,5 +98,5 @@ class MediaDao(BaseDao, Base):
 
     def __repr__(self):
         """Return description of self."""
-        return "<Media(id: {}, type: {}, name: {}, url: {}, path: {})>".format(
-            self.id, self.media_type, self.media_name, self.url, self.fs_path)
+        return "<Media(id: {}, type: {}, name: {}, url: {})>".format(
+            self.id, self.media_type, self.media_name, self.url)
