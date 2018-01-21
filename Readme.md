@@ -41,9 +41,11 @@ Per l'esecuzione di questo progetto, abbiamo fatto uso dei seguenti elementi:
 	- Descrizione: PostgreSQL è un potente object-relational database system sviluppato open source. Data la presenza di un'interfaccia programmativa nativa per il linguaggio Python e l'utilizzo di SQLAlchemy, la nostra scelta per il database da utilizzare è ricaduta su di questo specifico database open source.
 	- Link utili: [PostgreSQL](https://www.postgresql.org/)
 
+Il progetto è stato sviluppato utilizzando i pattern di *Face Controller* (cartella `origami/resources`), *Data Access Object* (cartella `origami/db`) e facendo uso di *Intercepting filters* (cartella `origami/middleware`) per l'autenticazione delle richieste.
+
 ## 4 - Istruzioni di installazione
 
-I requisiti per il funzionamento del software sono Python 3.6+ e Pip (package manager per Python).
+I requisiti per il funzionamento del software sono Python 3.6+, Pip (package manager per Python) e PostgreSQL.
 
 ### Installazione di Python
 Riferirsi al sito ufficiale [Python Official Site](https://www.python.it/), dove si trovano le versioni per Windows, Mac e Linux.
