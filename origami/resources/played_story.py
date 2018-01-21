@@ -71,3 +71,30 @@ class Collection(SessionedResource):
 
         resp.body = json.dumps(result, ensure_ascii=False)
         resp.status = falcon.HTTP_200
+
+    def on_post(self, req, resp):
+        """Called on a POST for a new story in the collection."""
+        story = json.load(req.bounded_stream)
+
+        player_info = story["player"]
+        choices_nodes = story["choices"]
+        ending_text = story["ending"]
+
+        player = PlayerDao.get_by_profile(
+            player_info.name, player_info.age, player_info.gender, self.session)
+        if player is None:
+            player = PlayerDao(
+                player_info.name, player_info.age, player_info.gender)
+            player.save(self.session)
+
+        played_story = PlayedStoryDao(player.id)
+        played_story.save(self.session)
+
+        for index, choices_node in enumerate(choices_nodes):
+            choice = PlayedChoicesDao(played_story.id, index + 1, choices_node)
+            choice.save(self.session)
+
+        ending = EndingDao(played_story.id, ending_text)
+        ending.save(self.session)
+
+        resp.status = falcon.HTTP_200

@@ -1,6 +1,6 @@
 """DAO module for the Player class."""
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, and_
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
@@ -41,12 +41,16 @@ class PlayerDao(BaseDao, Base):
     def get_by_id(cls, player_id, session):
         """Get a single instance identified by its id."""
         query = session.query(cls).filter(cls.id == player_id)
-        try:
-            player = query.one()
-        except MultipleResultsFound:
-            raise
-        except NoResultFound:
-            return None
+        player = cls.get_one(query)
+
+        return player
+
+    @classmethod
+    def get_by_profile(cls, name, age, gender, session):
+        """Get a single instance identified by multiple attributes."""
+        query = session.query(cls).filter(
+            and_(cls.name == name, cls.age == age, cls.gender == gender))
+        player = cls.get_one(query)
 
         return player
 

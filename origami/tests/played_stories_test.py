@@ -86,3 +86,41 @@ class PlayedStoriesTestCase(OrigamiTestCase):
         target = falcon.HTTP_404
 
         self.assertEqual(result, target)
+
+    def test_post_played_story(self):
+        """Test for POST at /played_stories."""
+
+        json_story = {
+            "player": {
+                "name": "Gianni",
+                "age": 9,
+                "gender": "male"
+            },
+            "choices": [3, 1],
+            "ending": "La storia finisce un po' boh."
+        }
+
+        result = self.simulate_post("/played_stories", json=json_story,
+                                    headers={"Authorization": "Bearer " + self.token}).status
+        target = falcon.HTTP_200
+
+        self.assertEqual(target, result)
+
+    def test_post_played_story_new_player(self):
+        """Test for POST at /played_stories with new player."""
+
+        json_story = {
+            "player": {
+                "name": "Lina",
+                "age": 11,
+                "gender": "female"
+            },
+            "choices": [3, 1],
+            "ending": "La storia finisce un po' boh."
+        }
+
+        result = self.simulate_post("/played_stories", json=json_story,
+                                    headers={"Authorization": "Bearer " + self.token}).status
+        target = falcon.HTTP_200
+
+        self.assertEqual(target, result)
