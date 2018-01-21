@@ -81,10 +81,10 @@ class Collection(SessionedResource):
         ending_text = story["ending"]
 
         player = PlayerDao.get_by_profile(
-            player_info.name, player_info.age, player_info.gender, self.session)
+            player_info["name"], player_info["age"], player_info["gender"], self.session)
         if player is None:
             player = PlayerDao(
-                player_info.name, player_info.age, player_info.gender)
+                player_info["name"], player_info["age"], player_info["gender"])
             player.save(self.session)
 
         played_story = PlayedStoryDao(player.id)
