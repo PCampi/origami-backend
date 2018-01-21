@@ -1,18 +1,18 @@
 """DAO module for the Played Story class."""
 
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
+from sqlalchemy import Column, ForeignKey, Integer
 
-from .meta import Base
 from .base_dao import BaseDao
+from .meta import Base
+
 
 class PlayedStoryDao(BaseDao, Base):
     """DAO class for Played Story objects."""
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     player_id = Column(Integer, ForeignKey('player.id'))
 
-    def __init__(self,  player_id):
+    def __init__(self, player_id: int) -> None:
         self.player_id = player_id
 
     @property
@@ -23,21 +23,11 @@ class PlayedStoryDao(BaseDao, Base):
             "player_id": self.player_id
         }
 
-    def save(self, session):
-        """Persist the object."""
-        session.add(self)
-
     @classmethod
-    def get_by_id(cls, played_story_id, session):
+    def get_by_id(cls, played_story_id: str, session):
         """Get a single instance identified by its id."""
         query = session.query(cls).filter(cls.id == played_story_id)
-        try:
-            played_story = query.one()
-        except MultipleResultsFound:
-            raise
-        except NoResultFound:
-            return None
-
+        played_story = cls.get_one(query)
         return played_story
 
     @classmethod

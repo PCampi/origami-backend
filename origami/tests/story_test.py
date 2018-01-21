@@ -66,15 +66,15 @@ class StoryTestCase(OrigamiTestCase):
         target = [
             {
                 "id": 1,
-                "name": "node_prova1"
+                "name": "nodo_prova1"
             },
             {
                 "id": 2,
-                "name": "node_prova2"
+                "name": "nodo_prova2"
             },
             {
                 "id": 3,
-                "name": "node_prova3"
+                "name": "nodo_prova3"
             },
             {
                 "id": 4,
@@ -90,7 +90,4 @@ class StoryTestCase(OrigamiTestCase):
             }
         ]
 
-        # FIXME: questo test continua ad aggiungere i nodi,
-        # quindi al secondo giro si spacca.
-        # Forse si può risolvere con un in-memory database solo per i test?
         self.assertEqual(target, result)

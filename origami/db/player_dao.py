@@ -15,19 +15,17 @@ class PlayerDao(BaseDao, Base):
     name = Column(String(50))
     age = Column(Integer)
     gender = Column(String)
+    allowed_genders = {enum_gender.value for enum_gender in PlayerGenderEnum}
 
     def __init__(self, name, age, gender):
         self.name = name
         self.age = age
 
-        for enum_gender in PlayerGenderEnum:
-            if gender == enum_gender.value:
-                self.gender = gender
-                break
-
-        if self.gender is None:
+        if gender not in self.allowed_genders:
             raise ValueError("Value {} not allowed for argument gender. See player_gender.py"
                              .format(gender))
+        else:
+            self.gender = gender
 
     @property
     def as_dict(self):
@@ -38,10 +36,6 @@ class PlayerDao(BaseDao, Base):
             "age": self.age,
             "gender": self.gender
         }
-
-    def save(self, session):
-        """Persist the object."""
-        session.add(self)
 
     @classmethod
     def get_by_id(cls, player_id, session):

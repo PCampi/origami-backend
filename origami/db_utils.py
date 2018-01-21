@@ -1,14 +1,19 @@
-"""Module to populate the database with sample data."""
+"""Module to populate and clean the database with sample data."""
 
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import db
-from .main_app import get_engine
 
 
-def populate():
-    """Populate the database with sample data."""
-    engine = get_engine(memory=False)
+def insert_dummy_data(engine):
+    """Populate the database with dummy data.
+
+    Parameters
+    ----------
+
+    engine: SQLAlchemy Engine
+        database connection engine
+    """
     db.Base.metadata.create_all(engine)
     sess_maker = sessionmaker(bind=engine)
     session_cls = scoped_session(sess_maker)
@@ -54,10 +59,31 @@ def populate():
     ending4 = db.EndingDao(4, "La storia finisce così così.")
 
     session.add_all([player1, player2, player3])
-    session.add_all([admin1, admin2, admin3])
-    session.add_all([media1, media2, media3, media4, media5, media6, media7])
-    session.add_all([node1, node2, node3])
-    session.add_all([played_story1, played_story2, played_story3, played_story4])
-    session.add_all([ending1, ending2, ending3, ending4])
-    session.add_all([choice11, choice12, choice21, choice22, choice31, choice32, choice41, choice42])
     session.commit()
+    session.add_all([admin1, admin2, admin3])
+    session.commit()
+    session.add_all([media1, media2, media3, media4, media5, media6, media7])
+    session.commit()
+    session.add_all([node1, node2, node3])
+    session.commit()
+
+    session.add_all([played_story1, played_story2,
+                     played_story3, played_story4])
+    session.commit()
+
+    session.add_all([ending1, ending2, ending3, ending4])
+    session.commit()
+    session.add_all([choice11, choice12, choice21, choice22,
+                     choice31, choice32, choice41, choice42])
+    session.commit()
+
+
+def clean_database(engine):
+    """Drop all tables from the database.
+
+    Parameters
+    ----------
+
+    engine: SQLAlchemy Engine
+        database connection engine"""
+    db.Base.metadata.drop_all(bind=engine)

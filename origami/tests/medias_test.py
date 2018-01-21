@@ -15,52 +15,52 @@ class MediasTestCase(OrigamiTestCase):
         target = [
             {
                 "id": 1,
-                "type": "audio",
-                "name": "audio1.mp3",
+                "media_type": "audio",
+                "media_name": "audio1.mp3",
                 "url": None,
-                "path": None
+                "fs_path": None
             },
             {
                 "id": 2,
-                "type": "video",
-                "name": "video1.mp4",
+                "media_type": "video",
+                "media_name": "video1.mp4",
                 "url": None,
-                "path": None
+                "fs_path": None
             },
             {
                 "id": 3,
-                "type": "text",
-                "name": "text1.txt",
+                "media_type": "text",
+                "media_name": "text1.txt",
                 "url": None,
-                "path": None
+                "fs_path": None
             },
             {
                 "id": 4,
-                "type": "image",
-                "name": "image1.jpg",
+                "media_type": "image",
+                "media_name": "image1.jpg",
                 "url": None,
-                "path": None
+                "fs_path": None
             },
             {
                 "id": 5,
-                "type": "audio",
-                "name": "audio2.mp3",
+                "media_type": "audio",
+                "media_name": "audio2.mp3",
                 "url": None,
-                "path": None
+                "fs_path": None
             },
             {
                 "id": 6,
-                "type": "audio",
-                "name": "audio3.mp3",
+                "media_type": "audio",
+                "media_name": "audio3.mp3",
                 "url": None,
-                "path": None
+                "fs_path": None
             },
             {
                 "id": 7,
-                "type": "image",
-                "name": "image2.jpg",
+                "media_type": "image",
+                "media_name": "image2.jpg",
                 "url": None,
-                "path": None
+                "fs_path": None
             }
         ]
 
@@ -73,17 +73,17 @@ class MediasTestCase(OrigamiTestCase):
         target = [
             {
                 "id": 4,
-                "type": "image",
-                "name": "image1.jpg",
+                "media_type": "image",
+                "media_name": "image1.jpg",
                 "url": None,
-                "path": None
+                "fs_path": None
             },
             {
                 "id": 7,
-                "type": "image",
-                "name": "image2.jpg",
+                "media_type": "image",
+                "media_name": "image2.jpg",
                 "url": None,
-                "path": None
+                "fs_path": None
             }
         ]
 
@@ -95,10 +95,10 @@ class MediasTestCase(OrigamiTestCase):
                                    headers={"Authorization": "Bearer " + self.token}).json
         target = {
             "id": 1,
-            "type": "audio",
-            "name": "audio1.mp3",
+            "media_type": "audio",
+            "media_name": "audio1.mp3",
             "url": None,
-            "path": None
+            "fs_path": None
         }
 
         self.assertEqual(target, result)

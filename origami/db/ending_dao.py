@@ -1,19 +1,19 @@
 """DAO module for the Ending class."""
 
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
 from .base_dao import BaseDao
 
+
 class EndingDao(BaseDao, Base):
     """DAO class for Ending objects."""
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     played_story_id = Column(Integer, ForeignKey('playedstory.id'))
     text = Column(String(1000))
 
-    def __init__(self,  played_story_id, text):
+    def __init__(self, played_story_id: int, text: str) -> None:
         self.played_story_id = played_story_id
         self.text = text
 
@@ -26,34 +26,18 @@ class EndingDao(BaseDao, Base):
             "text": self.text
         }
 
-    def save(self, session):
-        """Persist the object."""
-        session.add(self)
-
     @classmethod
-    def get_by_id(cls, ending_id, session):
+    def get_by_id(cls, ending_id: int, session):
         """Get a single instance identified by its id."""
         query = session.query(cls).filter(cls.id == ending_id)
-        try:
-            ending = query.one()
-        except MultipleResultsFound:
-            raise
-        except NoResultFound:
-            return None
-
+        ending = cls.get_one(query)
         return ending
 
     @classmethod
-    def get_by_played_story_id(cls, story_id, session):
+    def get_by_played_story_id(cls, story_id: int, session):
         """Get a single instance identified by its played story id."""
         query = session.query(cls).filter(cls.played_story_id == story_id)
-        try:
-            story = query.one()
-        except MultipleResultsFound:
-            raise
-        except NoResultFound:
-            return None
-
+        story = cls.get_one(query)
         return story
 
     @classmethod

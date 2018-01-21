@@ -83,14 +83,8 @@ class MediaDao(BaseDao, Base):
 
         query = session.query(cls)\
             .filter(and_(cls.media_name == media_name, cls.media_type == media_type))
-        try:
-            media = query.one()
-        except MultipleResultsFound:
-            raise
-        except NoResultFound:
-            return None
-        else:
-            return media
+        media = cls.get_one(query)
+        return media
 
     @classmethod
     def get_list(cls, session):
@@ -101,7 +95,7 @@ class MediaDao(BaseDao, Base):
     @classmethod
     def get_list_by_type(cls, media_type, session):
         """Get a list of instances by type."""
-        if media_type not in MediaEnum:
+        if media_type not in cls.allowed_media_types:
             raise ValueError("Value {} not allowed for argument media_type. See media_type.py"
                              .format(media_type))
 

@@ -4,11 +4,8 @@ import logging
 
 import falcon
 
-from .base_test_class import OrigamiTestCase
+from .base_test import OrigamiTestCase
 
-
-logger = logging.getLogger("main.test_ending")
-logger.setLevel(logging.DEBUG)
 
 class EndingsTestCase(OrigamiTestCase):
     """Class for testing endings."""
@@ -45,10 +42,10 @@ class EndingsTestCase(OrigamiTestCase):
         """Test for GET at /endings/1."""
         result = self.simulate_get("/endings/1").json
         target = {
-                "id": 1,
-                "played_story_id": 1,
-                "text": "La storia finisce bene."
-            }
+            "id": 1,
+            "played_story_id": 1,
+            "text": "La storia finisce bene."
+        }
 
         self.assertEqual(target, result)
 

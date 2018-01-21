@@ -37,6 +37,7 @@ class BaseDao(object):
 
     def save(self, session):
         """Persist this instance to database using the provided session.
+        Inherited by all other DAO classes.
 
         Parameters
         ----------
