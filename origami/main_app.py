@@ -13,16 +13,16 @@ from .middleware import (JwtAuthBackend, SessionedAuthMiddleware,
 from .resources import (accounts, ending, login_admin, media, node,
                         played_story, player)
 
-LOGGER = app_logging.get_logger("main", level=logging.DEBUG)
+LOGGER = app_logging.get_logger("main", level=logging.INFO)
 
 
 def get_engine(memory=False):
     """Get the SQLAlchemy engine."""
     if memory:
-        LOGGER.info("Creating memory database")
+        LOGGER.debug("Creating memory database")
         return create_engine("sqlite:///:memory:", echo=True)
     else:
-        LOGGER.info("Creating engine for postgres")
+        LOGGER.debug("Creating engine for postgres")
         db_name = "origami_db"
         db_user = "origami_user"
         db_password = "origami_password"

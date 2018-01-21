@@ -28,6 +28,7 @@ class OrigamiTestCase(testing.TestCase):
         - sets a valid jwt token in self.aut_token
         """
         super(OrigamiTestCase, self).setUp()
+        self.clean_test_db(self.engine)
         self.create_test_db(self.engine)
 
         self.issuer = "pmc-mg.origami.it"
@@ -50,10 +51,10 @@ class OrigamiTestCase(testing.TestCase):
         self.token = None
         self.clean_test_db(self.engine)
 
-    def create_test_db(self, engine):
+    def create_test_db(self, engine=None):
         """Set up dummy data in the database."""
         db_utils.insert_dummy_data(engine)
 
-    def clean_test_db(self, engine):
+    def clean_test_db(self, engine=None):
         """Clean the database by dropping all tables."""
         db_utils.clean_database(engine)

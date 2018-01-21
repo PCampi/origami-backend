@@ -3,17 +3,21 @@
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import db
+from .main_app import get_engine
 
 
-def insert_dummy_data(engine):
+def insert_dummy_data(engine=None):
     """Populate the database with dummy data.
 
     Parameters
     ----------
 
-    engine: SQLAlchemy Engine
+    engine: SQLAlchemy Engine, optional
         database connection engine
     """
+    if not engine:
+        engine = get_engine(memory=False)
+
     db.Base.metadata.create_all(engine)
     sess_maker = sessionmaker(bind=engine)
     session_cls = scoped_session(sess_maker)
@@ -27,13 +31,13 @@ def insert_dummy_data(engine):
     admin2 = db.AdministratorDao("Pluto", "pluto@gmail.com", "pluto2")
     admin3 = db.AdministratorDao("Paperino", "paperino@gmail.com", "paperino3")
 
-    media1 = db.MediaDao("audio", "audio1.mp3", None, None)
-    media2 = db.MediaDao("video", "video1.mp4", None, None)
-    media3 = db.MediaDao("text", "text1.txt", None, None)
-    media4 = db.MediaDao("image", "image1.jpg", None, None)
-    media5 = db.MediaDao("audio", "audio2.mp3", None, None)
-    media6 = db.MediaDao("audio", "audio3.mp3", None, None)
-    media7 = db.MediaDao("image", "image2.jpg", None, None)
+    media1 = db.MediaDao("audio", "audio1.mp3", None)
+    media2 = db.MediaDao("video", "video1.mp4", None)
+    media3 = db.MediaDao("text", "text1.txt", None)
+    media4 = db.MediaDao("image", "image1.jpg", None)
+    media5 = db.MediaDao("audio", "audio2.mp3", None)
+    media6 = db.MediaDao("audio", "audio3.mp3", None)
+    media7 = db.MediaDao("image", "image2.jpg", None)
 
     node1 = db.NodeDao("nodo_prova1")
     node2 = db.NodeDao("nodo_prova2")
@@ -61,7 +65,6 @@ def insert_dummy_data(engine):
     session.add_all([player1, player2, player3])
     session.commit()
     session.add_all([admin1, admin2, admin3])
-    session.commit()
     session.add_all([media1, media2, media3, media4, media5, media6, media7])
     session.commit()
     session.add_all([node1, node2, node3])
@@ -78,12 +81,14 @@ def insert_dummy_data(engine):
     session.commit()
 
 
-def clean_database(engine):
+def clean_database(engine=None):
     """Drop all tables from the database.
 
     Parameters
     ----------
 
-    engine: SQLAlchemy Engine
+    engine: SQLAlchemy Engine, optional
         database connection engine"""
+    if not engine:
+        engine = get_engine(memory=False)
     db.Base.metadata.drop_all(bind=engine)

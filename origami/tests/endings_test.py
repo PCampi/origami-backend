@@ -1,7 +1,5 @@
 """Unittest."""
 
-import logging
-
 import falcon
 
 from .base_test import OrigamiTestCase
@@ -10,9 +8,12 @@ from .base_test import OrigamiTestCase
 class EndingsTestCase(OrigamiTestCase):
     """Class for testing endings."""
 
+    url = "/endings"
+
     def test_get_endings_list(self):
         """Test for the GET at /endings."""
-        result = self.simulate_get("/endings").json
+        result = self.simulate_get(self.url,
+                                   headers={"Authorization": "Bearer " + self.token}).json
         target = [
             {
                 "id": 1,
@@ -40,7 +41,8 @@ class EndingsTestCase(OrigamiTestCase):
 
     def test_get_ending(self):
         """Test for GET at /endings/1."""
-        result = self.simulate_get("/endings/1").json
+        result = self.simulate_get(self.url + "/1",
+                                   headers={"Authorization": "Bearer " + self.token}).json
         target = {
             "id": 1,
             "played_story_id": 1,
@@ -51,7 +53,8 @@ class EndingsTestCase(OrigamiTestCase):
 
     def test_get_ending_nonexistent(self):
         """Try to GET a nonexistent ending."""
-        result = self.simulate_get("/endings/5").status
+        result = self.simulate_get(self.url + "/5",
+                                   headers={"Authorization": "Bearer " + self.token}).status
         target = falcon.HTTP_404
 
         self.assertEqual(result, target)
