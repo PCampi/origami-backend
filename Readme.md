@@ -25,6 +25,7 @@ Per l'assignment si è quindi scelto di restringere lo scope e realizzare il bac
 ## 3 - Informazioni Tecniche
 
 Per l'esecuzione di questo progetto, abbiamo fatto uso dei seguenti elementi:
+
 1. Linguaggio: Python 3.6
     - Descrizione: Python è un linguaggio di programmazione dinamico orientato agli oggetti. Lo abbiamo scelto per la disponibilità numerosa di librerie web, per la rapidità di sviluppo e la semplicità di sintassi, e la possibilità di interfacciarsi con i più noti database open source. Abbiamo inoltre utilizzato, integrato a Python, lo static type checker Mypy: essendo Python un linguaggio a tipizzazione dinamica e necessitando di un controllo sui tipi degli oggetti più accurato in alcuni passaggi, abbiamo ritenuto opportuno impiegare Mypy.
     - Link utili: [Python Official Site](https://www.python.it/), [Mypy](http://mypy-lang.org/).
@@ -53,11 +54,7 @@ Riferirsi al sito ufficiale [Python Official Site](https://www.python.it/), dove
 ### Installazione di Pip
 Una volta installato python, installare il package manager Pip dal [sito ufficiale Pip](https://pip.pypa.io/en/stable/installing/). Se si dispone di una versione di Python più recente della 3.4, Pip è automaticamente installato.
 
-Per verificare l'installazione di Pip, aprire il terminale e digitare
-```bash
-pip list
-```
-che dovrebbe visualizzare l'elenco dei pacchetti installati.
+Per verificare l'installazione di Pip, aprire il terminale e digitare `pip list` che dovrebbe visualizzare l'elenco dei pacchetti installati.
 
 ### Installazione del database PostgreSQL
 Installare PostgreSQL dal [sito ufficiale](https://www.postgresql.org/), e creare un database con credenziali:
@@ -68,15 +65,9 @@ Installare PostgreSQL dal [sito ufficiale](https://www.postgresql.org/), e crear
 
 ### Installazione di virtualenv e creazione di un ambiente virtuale
 
-Virtualenv permette di creare una installazione separata di Python in una specifica cartella. Per installarlo, digitare nel terminale:
-```bash
-pip install virtualenv
-```
+Virtualenv permette di creare una installazione separata di Python in una specifica cartella. Per installarlo, digitare nel terminale: `pip install virtualenv`
 
-Da terminale, navigare fino alla cartella in cui risiede il progetto, entrare nella prima cartella `origami` (quella in cui sono presenti i file `requirements.txt` e `dev-requirements.txt`) e creare l'ambiente con
-```bash
-virtualenv .venv
-```
+Da terminale, navigare fino alla cartella in cui risiede il progetto, entrare nella prima cartella `origami` (quella in cui sono presenti i file `requirements.txt` e `dev-requirements.txt`) e creare l'ambiente con `bash virtualenv .venv`
 
 Per installare i pacchetti necessari all'esecuzione dei test, attivare l'ambiente virtuale con il seguente comando:
 ##### Su macOS/Linux:
@@ -90,10 +81,12 @@ source .venv/bin/activate
 ```
 
 Attivato l'ambiente virtuale, installare i requisiti digitando nel terminale:
+
 ```bash
 pip install -r dev-requirements.txt
 ```
 seguito da
+
 ```bash
 pip install -r requirements.txt
 ```
