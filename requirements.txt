@@ -5,5 +5,4 @@ ujson==1.35
 requests==2.18.4
 psycopg2==2.7.3.2
 SQLAlchemy==1.2.1
-falcon-auth
 pyjwt==1.5.3

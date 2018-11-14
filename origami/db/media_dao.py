@@ -1,6 +1,6 @@
 """DAO module for the Media class."""
 
-from sqlalchemy import Column, Integer, String, and_
+from sqlalchemy import Column, Integer, String, and_, UniqueConstraint
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
@@ -15,11 +15,14 @@ class MediaDao(BaseDao, Base):
     media_type = Column(String(5))
     media_name = Column(String(50))
     url = Column(String(50), nullable=True)
-    fs_path = Column(String(50), nullable=True)
+    __table_args__ = (UniqueConstraint(
+        'media_type',
+        'media_name',
+        name='_media_type_name_unique_constraint'),
+    )
     allowed_media_types = {media_enum.value for media_enum in MediaEnum}
 
-    # FIXME: chi mi impedisce di inserire due media con uguale tipo e nome?
-    def __init__(self, media_type: str, media_name: str, url: str, fs_path: str) -> None:
+    def __init__(self, media_type: str, media_name: str, url: str) -> None:
         """Create a new media DAO object.
 
         Parameters
@@ -32,9 +35,6 @@ class MediaDao(BaseDao, Base):
 
         url: str
             url where the media can be found
-
-        fs_path: str
-            path on the filesystem where the media can be found
         """
         if media_type in self.allowed_media_types:
             self.media_type = media_type
@@ -43,7 +43,6 @@ class MediaDao(BaseDao, Base):
                              .format(media_type))
         self.media_name = media_name
         self.url = url
-        self.fs_path = fs_path
 
     @property
     def as_dict(self):
@@ -52,8 +51,7 @@ class MediaDao(BaseDao, Base):
             "id": self.id,
             "media_type": self.media_type,
             "media_name": self.media_name,
-            "url": self.url,
-            "fs_path": self.fs_path
+            "url": self.url
         }
 
     @classmethod
@@ -65,14 +63,8 @@ class MediaDao(BaseDao, Base):
 
         query = session.query(cls)\
             .filter(and_(cls.id == media_id, cls.media_type == media_type))
-        try:
-            medias = query.one()
-        except MultipleResultsFound:
-            raise
-        except NoResultFound:
-            return None
-        else:
-            return medias
+        media = cls.get_one(query)
+        return media
 
     @classmethod
     def get_by_name_and_type(cls, media_name, media_type, session):
@@ -88,7 +80,7 @@ class MediaDao(BaseDao, Base):
 
     @classmethod
     def get_list(cls, session):
-        """Return a list of instances."""
+        """Return a list of all medias."""
         medias = session.query(cls).all()
         return medias
 
@@ -100,11 +92,11 @@ class MediaDao(BaseDao, Base):
                              .format(media_type))
 
         medias = session.query(cls)\
-            .filter(cls.media_type == media_type)
+            .filter(cls.media_type == media_type).all()
 
         return medias
 
     def __repr__(self):
         """Return description of self."""
-        return "<Media(id: {}, type: {}, name: {}, url: {}, path: {})>".format(
-            self.id, self.media_type, self.media_name, self.url, self.fs_path)
+        return "<Media(id: {}, type: {}, name: {}, url: {})>".format(
+            self.id, self.media_type, self.media_name, self.url)

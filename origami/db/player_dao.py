@@ -1,7 +1,6 @@
 """DAO module for the Player class."""
 
 from sqlalchemy import Column, Integer, String, and_
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from .meta import Base
 from .base_dao import BaseDao

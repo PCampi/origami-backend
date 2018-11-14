@@ -3,7 +3,7 @@
 import falcon
 import jwt
 
-from .base_test import OrigamiTestCase
+from .base_test_class import OrigamiTestCase
 
 
 class LoginTestCase(OrigamiTestCase):
