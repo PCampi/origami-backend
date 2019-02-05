@@ -2,7 +2,7 @@ Werkzeug==0.14
 gunicorn==19.7.1
 falcon==1.4.1
 ujson==1.35
-requests==2.18.4
+requests>=2.20.0
 psycopg2==2.7.3.2
 SQLAlchemy==1.2.1
 pyjwt==1.5.3
